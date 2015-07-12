@@ -9,11 +9,13 @@ library(lubridate)
 install.packages("stringr", repos='http://cran.us.r-project.org')
 library(stringr)
 
-# Zip file located here:https://d396qusza40orc.cloudfront.net/exdata%2Fdata%2Fhousehold_power_consumption.zip. 
+# Zip file located here: http://d396qusza40orc.cloudfront.net/exdata%2Fdata%2Fhousehold_power_consumption.zip. 
 # Download and extract household_power_consumption.txt file to your system.
+temp <- tempfile()
+download.file("http://d396qusza40orc.cloudfront.net/exdata%2Fdata%2Fhousehold_power_consumption.zip",temp)
+selectdataset <- read.table(unz(temp, "household_power_consumption.txt"), header = TRUE, sep = ";")
+unlink(temp)
 
-datasetdownload = "./household_power_consumption.txt"
-selectdataset <- read.table (datasetdownload, header = TRUE, sep = ";")
 selectdataset$Date <- as.Date(selectdataset[,1], format= "%d/%m/%Y")
 refineddata <- selectdataset[selectdataset$Date == "2007-02-01",]
 refineddata <- rbind(refineddata,selectdataset[selectdataset$Date == "2007-02-02",])
